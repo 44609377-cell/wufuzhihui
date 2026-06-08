@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五福智慧 — 重新看见幸福的完整坐标</title>
+<style>
+  /* ========== Reset & Base ========== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: "PingFang SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+    color: #1A1A1A;
+    background: #F7F3ED;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  /* ========== Colors ========== */
+  :root {
+    --red-deep: #8B1A2B;
+    --red-mid: #A4192D;
+    --red-dark: #5C1A25;
+    --gold: #C9A96E;
+    --gold-light: #E2CC9A;
+    --gold-pale: #F0E6D0;
+    --cream: #F7F3ED;
+    --cream-dark: #EDE6DA;
+    --ink: #1A1A1A;
+    --ink-light: #4A4A4A;
+    --ink-muted: #7A7A7A;
+  }
+
+  /* ========== Utility ========== */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  .section-pad { padding: 100px 0; }
+
+  /* ========== Nav ========== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(247, 243, 237, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201, 169, 110, 0.25);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
+  nav .nav-inner {
+    max-width: 960px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  nav .brand {
+    font-size: 1.15rem; font-weight: 700; color: var(--red-mid);
+    letter-spacing: 0.08em;
+  }
+  nav .links { display: flex; gap: 28px; }
+  nav .links a {
+    font-size: 0.88rem; color: var(--ink-light); letter-spacing: 0.04em;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav .links a:hover { color: var(--red-mid); }
+
+  /* ========== Hero ========== */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #F7F3ED 0%, #EDE6DA 40%, #F0E6D0 100%);
+    padding-top: 60px;
+  }
+  #hero::before {
+    content: ''; position: absolute; top: -120px; right: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(164,25,45,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  #hero::after {
+    content: ''; position: absolute; bottom: -100px; left: -60px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-content {
+    position: relative; z-index: 1; text-align: center;
+    padding: 0 24px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .hero-ornament {
+    width: 48px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin-bottom: 36px;
+  }
+  .hero-title {
+    font-size: clamp(3.2rem, 8vw, 5.2rem);
+    font-weight: 900; color: var(--red-deep);
+    letter-spacing: 0.2em; line-height: 1.2;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero-title::after {
+    content: '';
+    display: block;
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--red-mid), var(--gold));
+    margin: 20px auto 0;
+    border-radius: 2px;
+  }
+  .hero-sub {
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    color: var(--ink-light); max-width: 540px;
+    margin: 20px auto 40px; line-height: 1.9;
+    font-weight: 600;
+  }
+  .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+  .hero-brand {
+    font-size: 0.88rem; letter-spacing: 0.35em;
+    color: var(--ink-muted); font-weight: 500;
+    padding-top: 20px;
+    border-top: 1px solid rgba(201,169,110,0.3);
+    min-width: 140px;
+    text-align: center;
+  }
+  .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 15px 40px; border-radius: 6px;
+    font-size: 1rem; font-weight: 600; letter-spacing: 0.06em;
+    transition: all 0.25s; cursor: pointer; border: none;
+  }
+  .btn-primary {
+    background: var(--red-mid); color: #fff;
+  }
+  .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(164,25,45,0.25); }
+  .btn-outline {
+    background: transparent; color: var(--red-mid);
+    border: 1.5px solid var(--red-mid);
+  }
+  .btn-outline:hover { background: var(--red-mid); color: #fff; }
+
+  /* ========== Pain ========== */
+  #pain {
+    background: linear-gradient(160deg, #5C2D35 0%, #3D1F24 100%);
+    color: var(--cream);
+    position: relative;
+  }
+  #pain::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--red-mid), var(--gold), var(--red-mid));
+  }
+  .pain-inner { max-width: 700px; margin: 0 auto; }
+  .pain-label {
+    font-size: 0.82rem; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 20px; text-transform: uppercase;
+    font-weight: 500;
+  }
+  .pain-title {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    font-weight: 700; line-height: 1.5; margin-bottom: 36px;
+  }
+  .pain-body { font-size: 1.05rem; line-height: 2; color: rgba(247,243,237,0.88); font-weight: 500; }
+  .pain-body p + p { margin-top: 20px; }
+  .pain-highlight {
+    color: var(--gold-light); font-weight: 600;
+  }
+  .pain-divider {
+    width: 48px; height: 2px; background: var(--gold);
+    margin: 32px 0;
+  }
+
+  /* ========== Value ========== */
+  #value { background: #fff; }
+  .value-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+  }
+  .value-label {
+    font-size: 0.82rem; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .value-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700; line-height: 1.5; margin-bottom: 24px;
+    color: var(--ink);
+  }
+  .value-text { font-size: 1rem; color: var(--ink-light); line-height: 2; font-weight: 500; }
+  .value-text p + p { margin-top: 16px; }
+  .value-visual {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .value-card {
+    background: var(--cream); border-radius: 10px;
+    padding: 26px 28px;
+    border-left: 3px solid var(--gold);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .value-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .value-card h4 {
+    font-size: 0.95rem; color: var(--red-mid); margin-bottom: 6px; font-weight: 700;
+  }
+  .value-card p {
+    font-size: 0.9rem; color: var(--ink-muted); line-height: 1.7;
+    font-weight: 500;
+  }
+
+  /* ========== Outline ========== */
+  #outline { background: var(--cream); }
+  .outline-header { text-align: center; margin-bottom: 60px; }
+  .outline-label {
+    font-size: 0.82rem; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .outline-title {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    font-weight: 700; color: var(--ink);
+  }
+  .outline-list { display: flex; flex-direction: column; gap: 24px; }
+  .module {
+    background: #fff; border-radius: 12px;
+    padding: 40px; position: relative; overflow: hidden;
+    border: 1px solid rgba(201,169,110,0.15);
+    transition: box-shadow 0.3s;
+  }
+  .module:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.06); }
+  .module-num {
+    position: absolute; top: 20px; right: 28px;
+    font-size: 4rem; font-weight: 800; color: rgba(201,169,110,0.1);
+    line-height: 1;
+  }
+  .module-tag {
+    display: inline-block;
+    font-size: 0.75rem; letter-spacing: 0.15em; color: var(--gold);
+    border: 1px solid var(--gold-light); border-radius: 100px;
+    padding: 5px 16px; margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .module h3 {
+    font-size: 1.3rem; font-weight: 700; color: var(--red-mid);
+    margin-bottom: 8px;
+  }
+  .module .quote {
+    font-style: italic; color: var(--ink-muted); font-size: 0.95rem;
+    margin-bottom: 20px; padding-left: 16px;
+    border-left: 2px solid var(--gold);
+    font-weight: 500;
+  }
+  .module ul { list-style: none; }
+  .module li {
+    font-size: 0.95rem; color: var(--ink-light); line-height: 2;
+    padding-left: 20px; position: relative;
+    font-weight: 500;
+  }
+  .module li::before {
+    content: ''; position: absolute; left: 0; top: 11px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ========== Teacher ========== */
+  #teacher { background: #fff; }
+  .teacher-grid {
+    display: grid; grid-template-columns: 220px 1fr; gap: 48px;
+    align-items: start;
+  }
+  .teacher-avatar {
+    width: 220px; height: 280px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  .teacher-avatar img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+  }
+  .teacher-label {
+    font-size: 0.82rem; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .teacher-name {
+    font-size: 1.7rem; font-weight: 700; color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .teacher-role {
+    font-size: 0.95rem; color: var(--ink-muted); margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .teacher-bio { font-size: 0.95rem; color: var(--ink-light); line-height: 2; font-weight: 500; }
+  .teacher-bio p + p { margin-top: 12px; }
+  .teacher-stats {
+    display: flex; gap: 36px; margin-top: 28px; flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-size: 1.9rem; font-weight: 800; color: var(--red-mid);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.78rem; color: var(--ink-muted); margin-top: 6px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  /* ========== People ========== */
+  #people { background: var(--cream); }
+  .people-header { text-align: center; margin-bottom: 48px; }
+  .people-label {
+    font-size: 0.82rem; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .people-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700; color: var(--ink);
+  }
+  .people-cards {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+  }
+  .people-card {
+    background: #fff; border-radius: 10px; padding: 28px 16px;
+    text-align: center; border: 1px solid rgba(201,169,110,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .people-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+  .people-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--gold-pale); margin: 0 auto 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+  }
+  .people-card h4 {
+    font-size: 0.9rem; font-weight: 700; color: var(--red-mid);
+    margin-bottom: 8px;
+  }
+  .people-card p {
+    font-size: 0.82rem; color: var(--ink-muted); line-height: 1.7;
+    font-weight: 500;
+  }
+
+  /* ========== FAQ ========== */
+  #faq { background: #fff; }
+  .faq-header { text-align: center; margin-bottom: 48px; }
+  .faq-label {
+    font-size: 0.82rem; letter-spacing: 0.2em; color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .faq-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700; color: var(--ink);
+  }
+  .faq-list { max-width: 680px; margin: 0 auto; }
+  .faq-item {
+    border-bottom: 1px solid rgba(201,169,110,0.2);
+  }
+  .faq-item summary {
+    padding: 20px 0; font-size: 0.98rem; font-weight: 600;
+    color: var(--ink); cursor: pointer; list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: color 0.2s;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: '+'; font-size: 1.3rem; color: var(--gold);
+    transition: transform 0.2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item summary:hover { color: var(--red-mid); }
+  .faq-answer {
+    padding: 0 0 20px; font-size: 0.95rem;
+    color: var(--ink-light); line-height: 1.9;
+    font-weight: 500;
+  }
+
+  /* ========== Signup ========== */
+  #signup {
+    background: linear-gradient(160deg, var(--red-dark) 0%, var(--red-mid) 60%, #A02040 100%);
+    color: #fff; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #signup::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .signup-inner { position: relative; z-index: 1; }
+  .signup-title {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    font-weight: 700; margin-bottom: 12px;
+  }
+  .signup-sub {
+    font-size: 1.05rem; opacity: 0.85; margin-bottom: 36px;
+    font-weight: 500;
+  }
+  .signup-info {
+    display: flex; gap: 40px; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 40px;
+  }
+  .signup-info-item {
+    text-align: center;
+  }
+  .signup-info-item .label {
+    font-size: 0.78rem; opacity: 0.7; letter-spacing: 0.1em; margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .signup-info-item .value {
+    font-size: 1.15rem; font-weight: 700;
+  }
+  .btn-signup {
+    display: inline-flex; align-items: center;
+    padding: 16px 48px; background: #fff;
+    color: var(--red-mid); border-radius: 6px;
+    font-size: 1.05rem; font-weight: 700;
+    letter-spacing: 0.06em; cursor: pointer;
+    border: none; transition: all 0.25s;
+  }
+  .btn-signup:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+  }
+  .signup-contact {
+    margin-top: 28px; font-size: 0.88rem; opacity: 0.7;
+    font-weight: 500;
+  }
+
+  /* ========== Modal ========== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.55);
+    display: none; align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+    padding: 24px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: #fff; border-radius: 16px;
+    max-width: 400px; width: 100%; text-align: center;
+    position: relative;
+    padding: 48px 36px 36px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: modalIn 0.3s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 18px;
+    font-size: 1.6rem; color: var(--ink-muted);
+    cursor: pointer; line-height: 1;
+    transition: color 0.2s;
+    border: none; background: none;
+    padding: 4px;
+  }
+  .modal-close:hover { color: var(--red-mid); }
+  .modal img {
+    width: 220px; height: 220px;
+    margin: 0 auto 16px;
+    border-radius: 8px;
+  }
+  .modal-title {
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--ink); margin-bottom: 6px;
+  }
+  .modal-desc {
+    font-size: 0.9rem; color: var(--ink-muted);
+    font-weight: 500;
+  }
+
+  /* ========== Footer ========== */
+  footer {
+    background: var(--ink); color: rgba(247,243,237,0.5);
+    text-align: center; padding: 32px 24px;
+    font-size: 0.85rem; letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+  footer span { color: var(--gold); }
+
+  /* ========== Responsive ========== */
+  @media (max-width: 1024px) {
+    .people-cards { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    nav .links { display: none; }
+    .value-grid { grid-template-columns: 1fr; gap: 36px; }
+    .teacher-grid { grid-template-columns: 1fr; text-align: center; }
+    .teacher-avatar { margin: 0 auto; width: 180px; height: 230px; }
+    .teacher-stats { justify-content: center; }
+    .people-cards { grid-template-columns: 1fr; gap: 16px; }
+    .people-card { padding: 28px 24px; }
+    .people-card p { font-size: 0.88rem; }
+    .module { padding: 28px 24px; }
+    .section-pad { padding: 72px 0; }
+    .signup-info { gap: 24px; }
+    .modal { padding: 44px 24px 32px; }
+    .modal img { width: 180px; height: 180px; }
+  }
+
+  /* ========== Animations ========== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate { opacity: 0; }
+  .animate.visible {
+    animation: fadeInUp 0.6s ease forwards;
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== Nav ====== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="brand">五福智慧</div>
+    <div class="links">
+      <a href="#hero">课程</a>
+      <a href="#value">价值</a>
+      <a href="#outline">大纲</a>
+      <a href="#teacher">导师</a>
+      <a href="#people">适合人群</a>
+      <a href="#faq">常见问题</a>
+      <a href="#signup">立即报名</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ====== Hero ====== -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-ornament"></div>
+    <h1 class="hero-title">五福智慧</h1>
+    <p class="hero-sub">在焦虑与不确定的时代，<br>重新看见幸福的完整坐标。</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="openModal()">立即报名</button>
+      <a href="#value" class="btn btn-outline">了解课程</a>
+    </div>
+    <div class="hero-brand">文勋教育</div>
+  </div>
+</section>
+
+<!-- ====== Pain ====== -->
+<section id="pain" class="section-pad">
+  <div class="container pain-inner animate">
+    <div class="pain-label">你是否有同样的感受</div>
+    <h2 class="pain-title">这个时代，我们从未如此富有，<br>却从未如此焦虑。</h2>
+    <div class="pain-divider"></div>
+    <div class="pain-body">
+      <p>信息的洪流裹挟着我们，日夜灼烧着身心。我们不是没有资源，不是没有努力——我们只是把几乎所有的注意力，都押注在了以为能解决一切的那一种自认为或被洗脑的"福"上：财富、名望、地位……</p>
+      <p>或者，干脆选择躺平，任由命运的河流带着自己漂流，内心越来越空洞与迷茫。</p>
+      <p>幸福，不是某一种福的极致堆叠。<span class="pain-highlight">真正的幸福，是一种生命整体的流动与平衡。</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== Value ====== -->
+<section id="value" class="section-pad">
+  <div class="container">
+    <div class="value-grid">
+      <div class="animate">
+        <div class="value-label">这门课在做什么</div>
+        <h2 class="value-title">看见注意力的方向，<br>就是看见幸福的格局</h2>
+        <div class="value-text">
+          <p>中国文化中，"五福"早已给出了答案。这五个维度，勾勒出一个完整的生命幸福坐标系。而藏在五福背后、真正主宰我们幸福体验的枢机，是每个人的<strong style="color:var(--red-mid)">注意力</strong>。</p>
+          <p>你把注意力放在哪里，你的生命能量就流向哪里。</p>
+          <p>这门课程，不是告诉你"该怎么做"的方法论清单，而是帮你看见自己的注意力模式，看见它如何悄悄塑造了你的幸福格局——然后，从这个最根本的地方，重新选择。</p>
+        </div>
+      </div>
+      <div class="value-visual animate">
+        <div class="value-card">
+          <h4>不教方法，帮你看</h4>
+          <p>看见自己看不见的注意力惯性，比学一百种方法更根本</p>
+        </div>
+        <div class="value-card">
+          <h4>不只是课，是转化</h4>
+          <p>三天三夜的封闭沉浸，让改变真正发生在身体里，不只是留在头脑中</p>
+        </div>
+        <div class="value-card">
+          <h4>不管你在哪个阶段</h4>
+          <p>"亢龙有悔"后的空虚，或"潜龙勿用"阶段的焦虑——都能找到属于你的指引</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== Outline ====== -->
+<section id="outline" class="section-pad">
+  <div class="container">
+    <div class="outline-header animate">
+      <div class="outline-label">课程大纲</div>
+      <h2 class="outline-title">五大模块，从看见到重建</h2>
+    </div>
+    <div class="outline-list">
+
+      <div class="module animate">
+        <div class="module-num">01</div>
+        <div class="module-tag">开训课</div>
+        <h3>回到根本的问题</h3>
+        <p class="quote">我们追求的幸福，究竟是什么？</p>
+        <ul>
+          <li>幸福的幻觉与真相：为什么努力了、得到了，但还是感觉不够？</li>
+          <li>五福的启示：中国智慧里完整的幸福坐标系</li>
+          <li>五福背后看不见的枢机——注意力：一切幸福体验的源头</li>
+        </ul>
+      </div>
+
+      <div class="module animate">
+        <div class="module-num">02</div>
+        <div class="module-tag">模块一</div>
+        <h3>注意力与五福：认识这股生命之力</h3>
+        <p class="quote">你以为你在选择生活，其实是你的注意力在替你选择。</p>
+        <ul>
+          <li>什么是注意力？你的注意力究竟来自哪里？</li>
+          <li>注意力的七种状态：你现在活在哪一种？</li>
+          <li>注意力就是生命力——注意力管理的本质</li>
+          <li>注意力与五福的关系：看见你的幸福格局是如何形成的</li>
+        </ul>
+      </div>
+
+      <div class="module animate">
+        <div class="module-num">03</div>
+        <div class="module-tag">模块二</div>
+        <h3>练习注意力：从头脑回到当下</h3>
+        <p class="quote">觉知，从感觉开始。</p>
+        <ul>
+          <li>注意力与感觉：重新接通身体这个最诚实的信号源</li>
+          <li>注意力与记忆：过去的经历如何在无意识中牵引你的现在</li>
+          <li>注意力与现实：你看见的"现实"，究竟是真实，还是注意力的投射？</li>
+          <li>注意力与倾听：真正的倾听，是一种注意力的回归</li>
+        </ul>
+      </div>
+
+      <div class="module animate">
+        <div class="module-num">04</div>
+        <div class="module-tag">模块三</div>
+        <h3>注意力的七种模式与五福坐标系：看见你的内在规律</h3>
+        <p class="quote">困住我们的，不是问题本身，而是看问题的方式。</p>
+        <ul>
+          <li>动机与结果的游戏：你真正想要的是什么？</li>
+          <li>七种注意力模式的深度解析：发现你的惯性与盲区</li>
+          <li>破局——非此即彼的人生困局：当"只能二选一"的信念松动</li>
+          <li>五福坐标系中的自我定位：我现在在哪里？我想去哪里？</li>
+        </ul>
+      </div>
+
+      <div class="module animate">
+        <div class="module-num">05</div>
+        <div class="module-tag">模块四</div>
+        <h3>实战运用：在五福坐标系里构建你的目标</h3>
+        <p class="quote">真正的目标，是生命的召唤，不是焦虑的出口。</p>
+        <ul>
+          <li>重新审视你的目标：它来自恐惧，还是来自你真正想活的生命？</li>
+          <li>在五福坐标系里构建有生命力的目标</li>
+          <li>制定你的行动蓝图：觉知力驱动下的真实改变</li>
+          <li>结营仪式：带走你的五福人生地图</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ====== Teacher ====== -->
+<section id="teacher" class="section-pad">
+  <div class="container">
+    <div class="teacher-grid">
+      <div class="teacher-avatar animate">
+        <img src="teacher.jpg" alt="慧可导师">
+      </div>
+      <div class="teacher-info animate">
+        <div class="teacher-label">导师介绍</div>
+        <div class="teacher-name">慧可</div>
+        <div class="teacher-role">资深企业总裁教练 · 心力沟通训练师</div>
+        <div class="teacher-bio">
+          <p>18年专业研习，9000+小时教练辅导，深度辅导60余位企业主。师承毓老师，核心课程"慧命重生——大人之学"，完整课程体系涵盖组织动力重构、功值管理、心力沟通、慧读书等。</p>
+          <p>WFA高级促动师、国家二级心理咨询师。长期致力于将中国经典智慧与现代教练技术融合，帮助企业家与管理者从心智模式的根本处实现转化。</p>
+        </div>
+        <div class="teacher-stats">
+          <div class="stat">
+            <div class="stat-num">18</div>
+            <div class="stat-label">年专业研习</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">9000+</div>
+            <div class="stat-label">小时教练辅导</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">60+</div>
+            <div class="stat-label">深度辅导企业主</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== People ====== -->
+<section id="people" class="section-pad">
+  <div class="container">
+    <div class="people-header animate">
+      <div class="people-label">适合谁来</div>
+      <h2 class="people-title">如果你有下面的感受，这门课就是为你准备的</h2>
+    </div>
+    <div class="people-cards">
+      <div class="people-card animate">
+        <div class="people-icon">&#9851;</div>
+        <h4>正在转折中的人</h4>
+        <p>人生或事业到了一个拐点，需要重新看清自己、做出选择</p>
+      </div>
+      <div class="people-card animate">
+        <div class="people-icon">&#9961;</div>
+        <h4>正在面对困难与瓶颈的人</h4>
+        <p>卡在瓶颈期，需要找到突破的内在力量与方向</p>
+      </div>
+      <div class="people-card animate">
+        <div class="people-icon">&#9733;</div>
+        <h4>事业成功后的人</h4>
+        <p>外在成就已具，内在却感到空虚，想找到更深层的意义</p>
+      </div>
+      <div class="people-card animate">
+        <div class="people-icon">&#9672;</div>
+        <h4>在内在成长上希望找到诀窍的人</h4>
+        <p>渴望突破表象，找到真正有效的内在成长路径</p>
+      </div>
+      <div class="people-card animate">
+        <div class="people-icon">&#9733;</div>
+        <h4>企业负责人</h4>
+        <p>承担着组织与家庭的责任，需要从根本处提升自己的心力与格局</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FAQ ====== -->
+<section id="faq" class="section-pad">
+  <div class="container">
+    <div class="faq-header animate">
+      <div class="faq-label">常见问题</div>
+      <h2 class="faq-title">你可能想问的</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item animate">
+        <details>
+          <summary>适合没有基础的人吗？</summary>
+          <div class="faq-answer">完全适合。这门课不讲理论体系，而是从你自身的生命体验出发。无论你是否有哲学或心理学基础，只要你带着真实的困惑来，就能有真实的收获。</div>
+        </details>
+      </div>
+      <div class="faq-item animate">
+        <details>
+          <summary>课程形式是什么？</summary>
+          <div class="faq-answer">三天三夜封闭式沉浸学习。不是坐着听课，而是体验、练习、对话、反思交替进行。封闭的场域是为了让转化真正发生，而不是听完就忘。</div>
+        </details>
+      </div>
+      <div class="faq-item animate">
+        <details>
+          <summary>5000元费用包含什么？</summary>
+          <div class="faq-answer">课程学费及课程期间全部教学材料。不含食宿及差旅费，开课前会提供住宿推荐方案。</div>
+        </details>
+      </div>
+      <div class="faq-item animate">
+        <details>
+          <summary>上完课会有什么变化？</summary>
+          <div class="faq-answer">你不会得到一套"应该怎么做"的标准答案。你会看见自己注意力的惯性模式，看见五福坐标系里你真正站在哪里，并带走一张属于你自己的五福人生地图。改变，从看见开始。</div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== Signup ====== -->
+<section id="signup" class="section-pad">
+  <div class="container signup-inner animate">
+    <h2 class="signup-title">三天三夜，一次真正的内在转化</h2>
+    <p class="signup-sub">看见注意力的方向，就是看见幸福的格局</p>
+    <div class="signup-info">
+      <div class="signup-info-item">
+        <div class="label">课程时长</div>
+        <div class="value">三天三夜</div>
+      </div>
+      <div class="signup-info-item">
+        <div class="label">课程形式</div>
+        <div class="value">封闭式沉浸学习</div>
+      </div>
+      <div class="signup-info-item">
+        <div class="label">课程投入</div>
+        <div class="value">5000元</div>
+      </div>
+    </div>
+    <button class="btn-signup" onclick="openModal()">立即报名</button>
+    <p class="signup-contact">咨询详情 · 请联系课程助手</p>
+  </div>
+</section>
+
+<!-- ====== Footer ====== -->
+<footer>
+  <p>慧可导师 ｜ <span>《五福智慧》</span>课程</p>
+</footer>
+
+<!-- ====== Modal ====== -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <img src="wechat-qr.jpg" alt="微信二维码">
+    <div class="modal-title">扫码添加导师微信</div>
+    <div class="modal-desc">备注"五福智慧"即可报名咨询</div>
+  </div>
+</div>
+
+<!-- ====== JS ====== -->
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Scroll animation
+  const animateEls = document.querySelectorAll('.animate');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  animateEls.forEach(el => observer.observe(el));
+
+  // Modal
+  function openModal() {
+    document.getElementById('modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(event) {
+    if (event.target === document.getElementById('modal')) {
+      closeModal();
+    }
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
